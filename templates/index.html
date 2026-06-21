@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Interactive dashboard for Google BigQuery Release Notes, with search, category filtering, and instant sharing.">
+    <title>BigQuery Release Insights</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Main Style Sheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-logo">
+                    <i class="fa-solid fa-database"></i>
+                </div>
+                <div class="brand-text">
+                    <h1>BigQuery</h1>
+                    <span>Release Insights</span>
+                </div>
+            </div>
+            
+            <nav class="nav-filters">
+                <div class="section-title">Filters</div>
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" id="search-input" placeholder="Search updates...">
+                </div>
+                
+                <div class="filter-group">
+                    <button class="filter-btn active" data-type="all">
+                        <i class="fa-solid fa-list"></i> All Updates
+                    </button>
+                    <button class="filter-btn" data-type="feature">
+                        <i class="fa-solid fa-star text-feature"></i> Features
+                    </button>
+                    <button class="filter-btn" data-type="changed">
+                        <i class="fa-solid fa-circle-exclamation text-changed"></i> Changes
+                    </button>
+                    <button class="filter-btn" data-type="deprecated">
+                        <i class="fa-solid fa-ban text-deprecated"></i> Deprecated
+                    </button>
+                </div>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <p>Data auto-fetched from official GCP feed.</p>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header class="main-header">
+                <div class="header-left">
+                    <h2>Release Feed</h2>
+                    <p id="feed-status">Syncing with Google Cloud Platform...</p>
+                </div>
+                
+                <div class="header-actions">
+                    <button id="refresh-btn" class="btn btn-primary" title="Refresh Release Notes">
+                        <i id="refresh-spinner" class="fa-solid fa-rotate"></i>
+                        <span>Refresh</span>
+                    </button>
+                </div>
+            </header>
+
+            <div class="content-body">
+                <!-- Tweet Composer Panel (Hidden by default, shown when user selects an update) -->
+                <div id="tweet-drawer" class="tweet-drawer">
+                    <div class="drawer-header">
+                        <div class="drawer-title">
+                            <i class="fa-brands fa-x-twitter"></i>
+                            <span>Share to X (Twitter)</span>
+                        </div>
+                        <button id="close-drawer-btn" class="close-btn"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <div class="drawer-body">
+                        <textarea id="tweet-textarea" rows="4" placeholder="Craft your tweet..."></textarea>
+                        <div class="tweet-char-counter"><span id="char-count">0</span>/280</div>
+                        <button id="submit-tweet-btn" class="btn btn-tweet">
+                            <i class="fa-brands fa-x-twitter"></i> Post Update
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Feed Container -->
+                <div id="feed-container" class="feed-container">
+                    <!-- Shimmer / Loading State -->
+                    <div class="shimmer-container">
+                        <div class="shimmer-card"></div>
+                        <div class="shimmer-card"></div>
+                        <div class="shimmer-card"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- App JavaScript -->
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
