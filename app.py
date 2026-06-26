@@ -1,7 +1,8 @@
+import os
 import re
 import requests
 import xml.etree.ElementTree as ET
-from flask import Flask, jsonify, render_template
+from flask import Flask, jsonify, render_template, send_from_directory
 
 app = Flask(__name__)
 
@@ -10,6 +11,14 @@ FEED_URL = "https://docs.cloud.google.com/feeds/bigquery-release-notes.xml"
 def clean_namespaces(xml_string):
     # Strip namespaces to simplify parsing with ElementTree
     return re.sub(r'\sxmlns="[^"]+"', '', xml_string, count=1)
+
+@app.route("/favicon.ico")
+def favicon():
+    return send_from_directory(
+        os.path.join(app.root_path, "static"),
+        "favicon.ico",
+        mimetype="image/vnd.microsoft.icon",
+    )
 
 @app.route("/")
 def index():
